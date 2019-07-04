@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
-import { Observable. throwError } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { map, catchError, flatMap } from "rxjs/operators";
 
 import { Category } from "./category.model";
@@ -17,7 +17,7 @@ export class CategoryService {
 
   getAll(): Observable<Category[]> {
     return this.http.get(this.apiPath).pipe(
-      catchErros(this.handleError),
+      catchError(this.handleError),
       map(this.jsonDataToCategories)
     )
   }
@@ -26,14 +26,14 @@ export class CategoryService {
     const url = `${this.apiPath}/${id}`;
 
     return this.http.get(url).pipe(
-      catchErros(this.handleError),
+      catchError(this.handleError),
       map(this.jsonDataToCategory)
     );
   }
 
   create(category: Category): Observable<Category> {
-    return ths.http.post(this.apiPath, category).pipe(
-      catchErros(this.handleError),
+    return this.http.post(this.apiPath, category).pipe(
+      catchError(this.handleError),
       map(this.jsonDataToCategory)
     )
   }
@@ -42,7 +42,7 @@ export class CategoryService {
     const url = `${this.apiPath}/${category.id}`;
 
     return this.http.put(url, category).pipe(
-      catchErros(this.handleError),
+      catchError(this.handleError),
       map(() => category)
     )
   }
@@ -51,14 +51,14 @@ export class CategoryService {
     const url = `${this.apiPath}/${id}`;
 
     return this.http.delete(url).pipe(
-      catchErros(this.handleError),
+      catchError(this.handleError),
       map(() => null)
     )
   }
 
   private jsonDataToCategories(jsonData: any[]): Category[] {
     const categories: Category[] = [];
-    jsonData.foreach(element => categories.push(element as Category));
+    jsonData.forEach(element => categories.push(element as Category));
     return categories;
   }
 
@@ -66,8 +66,8 @@ export class CategoryService {
     return jsonData as Category;
   }
 
-  private handleErros(error: any) Observable<any> {
-    console.log("ERRO NA REQUISIÇÃO => ", error);
+  private handleError(error: any): Observable<any> {
+    console.log('ERRO NA REQUISIÇÃO => ', error);
     return throwError(error);
   }
 }
